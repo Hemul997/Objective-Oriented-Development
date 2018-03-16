@@ -11,26 +11,32 @@ public class BigNumber {
     final static char POSITIVE_NUMBER_SIGH = '+';
     final static char NEGATIVE_NUMBER_SIGH = '-';
 
-    private List<Character> numberber;
+    private List<Character> number;
     private char sign;
 
     public List<Character> getNumber() {
-        return numberber;
+        return number;
     }
 
-    public void setNumber(List<Character> numberber) {
-        this.numberber = numberber;
+    public void setNumber(List<Character> number) {
+        this.number = number;
+    }
+
+    public void setNumber(String strNumber) {
+        this.number = strNumber.chars()
+                .mapToObj(e->(char)e)
+                .collect(Collectors.toList());
     }
 
     BigNumber(String strNumber){
         if (strNumber.charAt(0) == '-') {
-            this.numberber = strNumber.substring(1, strNumber.length() - 1)
+            this.number = strNumber.substring(1, strNumber.length())
                     .chars()
                     .mapToObj(e->(char)e)
                     .collect(Collectors.toList());
             this.sign = NEGATIVE_NUMBER_SIGH;
         } else {
-            this.numberber = strNumber.chars()
+            this.number = strNumber.chars()
                     .mapToObj(e->(char)e)
                     .collect(Collectors.toList());
             this.sign = POSITIVE_NUMBER_SIGH;
@@ -39,7 +45,7 @@ public class BigNumber {
     }
 
     BigNumber() {
-        this.numberber = new ArrayList<>();
+        this.number = new ArrayList<>();
         this.sign = POSITIVE_NUMBER_SIGH;
     }
 
@@ -80,6 +86,10 @@ public class BigNumber {
     public char getSign() {
         return sign;
     }
+    
+    public int getCountDigits() {
+        return this.number.size();
+    }
 
     public void setSign(char sign) {
         if (sign == NEGATIVE_NUMBER_SIGH) {
@@ -105,7 +115,7 @@ public class BigNumber {
                 subtractiveNumber.addAll(this.getNumber());
                 subtrahendNumber.addAll(value.getNumber());
                 break;
-            case 2:
+            case -1:
                 subtractiveNumber.addAll(value.getNumber());
                 subtrahendNumber.addAll(this.getNumber());
                 returnNumber.setSign(NEGATIVE_NUMBER_SIGH);
@@ -117,9 +127,10 @@ public class BigNumber {
 
             Boolean getDigit = FALSE;
             for (int i = 0; i <= subtrahendNumber.size(); ++i) {
-                if (i == subtrahendNumber.size() && !getDigit) {
+                if ((i == subtrahendNumber.size() && !getDigit) || (i == subtractiveNumber.size())) {
                     break;//fix bug with 105 - 6
                 }
+
                 firstOperand = getNumberValue(subtractiveNumber, i);
                 secondOperand = getNumberValue(subtrahendNumber, i);
                 if (getDigit) {
@@ -150,21 +161,21 @@ public class BigNumber {
         Collections.reverse(otherNumber);
         List<Character> returnValue = new ArrayList<>();
         int firstOperand, secondOperand;
-        char[] numberber = new char[thisNumber.size() + otherNumber.size()];
+        char[] number = new char[thisNumber.size() + otherNumber.size()];
         int length = thisNumber.size() + otherNumber.size();
         for (int i = 0; i < thisNumber.size(); ++i) {
             for (int j = 0; j < otherNumber.size() ; ++j) {
                 firstOperand = getNumberValue(thisNumber, i);
                 secondOperand = getNumberValue(otherNumber, j);
-                numberber[i + j] += firstOperand * secondOperand;
+                number[i + j] += firstOperand * secondOperand;
             }
         }
         for (int i = 0; i < length - 1; ++i) {
-            numberber[i + 1] += numberber[i] / BIG_NUMBER_BASE;
-            numberber[i] %= BIG_NUMBER_BASE;
+            number[i + 1] += number[i] / BIG_NUMBER_BASE;
+            number[i] %= BIG_NUMBER_BASE;
         }
-        for (int numberb : numberber) {
-            returnValue.add(Character.forDigit(numberb, BIG_NUMBER_BASE));
+        for (char num : number) {
+            returnValue.add(Character.forDigit(num, BIG_NUMBER_BASE));
         }
         Collections.reverse(returnValue);
         deleteRedundantZeros(returnValue);
@@ -172,23 +183,31 @@ public class BigNumber {
         return returnNumber;
     }
 
-    //TODO
-    public BigNumber divide(BigNumber value) {
-        BigNumber returnValue = new BigNumber();
-        return returnValue;
-    }
+//    //todo
+//    public BigNumber divide(BigNumber value) throws Exception {
+//
+//        if (value.getNumber().get(0) == '0' && value.getCountDigits() == 1) {
+//            throw new Exception("На ноль делить нельзя!");
+//        }
+//
+//        if (this.getCountDigits() < value.getCountDigits()) {
+//            return new BigNumber("0");
+//        }
+//
+//
+//    }
 
     @Override
     public String toString() {
         return "BigNumber{" +
-                "numberber=" + numberber.toString() +
+                "number=" + number.toString() +
                 '}';
     }
 
     public void printValue() {
         if (isNegative())
             System.out.print(this.sign);
-        this.numberber.forEach(System.out::print);
+        this.number.forEach(System.out::print);
     }
 
     private boolean nextDigit(int number) {
@@ -200,37 +219,37 @@ public class BigNumber {
     }
 
     private int findMaxNumber(List<Character> firstNumber, List<Character> secondNumber) {
-        int numberber = 0;
+        int result = 0;
         if (secondNumber.size() < firstNumber.size()) {
-            numberber = 1;
+            result = 1;
         } else {
             if (secondNumber.size() > firstNumber.size())
-                numberber = 2;
+                result = -1;
             else
                 for (int i = 0; i < firstNumber.size(); ++i) {
                     if (firstNumber.get(i) > secondNumber.get(i)) {
-                        numberber = 1;
+                        result = 1;
                         break;
                     }
                     if (firstNumber.get(i) < secondNumber.get(i)) {
-                        numberber = 2;
+                        result= -1;
                         break;
                     }
                 }
         }
-        return numberber;
+        return result;
     }
 
     private boolean isNegative() {
         return (this.sign == NEGATIVE_NUMBER_SIGH);
     }
 
-    private void deleteRedundantZeros(List<Character> numberber) {
-        for (int i = 0 ; i < numberber.size(); ++i) {
-            if (!numberber.get(i).equals('0')) {
+    private void deleteRedundantZeros(List<Character> number) {
+        for (int i = 0 ; i < number.size(); ++i) {
+            if (!number.get(i).equals('0')) {
                 break;
             } else {
-                numberber.remove(i);
+                number.remove(i);
                 --i;
             }
         }
