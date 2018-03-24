@@ -6,6 +6,9 @@ import volgatech.ood2018.shapes.IShape;
 public class CirclesCreator implements IShapesCreator {
     private static CirclesCreator instance = null;
 
+    private CirclesCreator() {}
+
+
     public static CirclesCreator getInstance() {
         CirclesCreator creator = instance;
         if (creator == null) {

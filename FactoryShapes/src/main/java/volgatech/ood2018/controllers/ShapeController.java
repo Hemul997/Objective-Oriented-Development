@@ -7,13 +7,19 @@ import volgatech.ood2018.shapes.IShape;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 public class ShapeController {
 
+    private String customFormat(String pattern, double value ) {
+        DecimalFormat myFormatter = new DecimalFormat(pattern);
+        return myFormatter.format(value);
+    }
+
     public void printShapeData(IShape shape, FileWriter writer) throws IOException {
         writer.write(shape.getName() + ':');
-        writer.write(" Perimeter: " + shape.getPerimeter());
-        writer.write(" Area: " + shape.getArea() + '\n');
+        writer.write(" Perimeter: " + customFormat("###,###.###", shape.getPerimeter()));
+        writer.write(" Area: " + customFormat("###,###.###", shape.getArea()) + '\n');
     }
 
     public IShape makeShape(String line) {

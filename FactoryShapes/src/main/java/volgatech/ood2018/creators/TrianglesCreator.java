@@ -6,6 +6,8 @@ import volgatech.ood2018.shapes.Triangle;
 public class TrianglesCreator implements IShapesCreator {
     private static TrianglesCreator instance = null;
 
+    private TrianglesCreator() {}
+
     public static TrianglesCreator getInstance() {
         TrianglesCreator creator = instance;
         if (creator == null) {

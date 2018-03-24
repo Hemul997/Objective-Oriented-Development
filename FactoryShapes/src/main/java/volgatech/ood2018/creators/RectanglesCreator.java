@@ -6,6 +6,8 @@ import volgatech.ood2018.shapes.Rectangle;
 public class RectanglesCreator implements IShapesCreator{
     private static RectanglesCreator instance = null;
 
+    private RectanglesCreator() {}
+
     public static RectanglesCreator getInstance() {
         RectanglesCreator creator = instance;
         if (creator == null) {
