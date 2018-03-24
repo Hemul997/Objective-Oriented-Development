@@ -72,6 +72,7 @@ public class BigNumber {
     public BigNumber subtract(BigNumber subNumber) {
         List<Character> returnValue = new ArrayList<>();
 
+        setSameSize(subNumber);
         boolean isLastDigit = false;
         for (int i = 0; i < subNumber.size(); i++) {
             int firstOperand = getNumberValue(this.value, i);
@@ -133,12 +134,13 @@ public class BigNumber {
         if (number.compareTo(new BigNumber("0")) == 0) {
             throw new Exception("Division by ZERO!!!");
         }
-        List<Character> returnValue = new ArrayList<>();
-        BigNumber thisNumber = new BigNumber(new ArrayList<>(this.value));
 
         if (this.size() < number.size()) {
             return new BigNumber("0");
         }
+
+        List<Character> returnValue = new ArrayList<>();
+        BigNumber thisNumber = new BigNumber(new ArrayList<>(this.value));
 
         int digitCount = 0;
         while (!thisNumber.value.isEmpty()) {
@@ -233,5 +235,21 @@ public class BigNumber {
             }
         }
         return result;
+    }
+
+    private void upSizeTo(int size) {
+        if (this.size() < size) {
+            while (this.size() != size) {
+                this.value.add('0');
+            }
+        }
+    }
+
+    private void setSameSize(BigNumber number) {
+        if (number.size() > this.size()) {
+            this.upSizeTo(number.size());
+        } else {
+            number.upSizeTo(this.size());
+        }
     }
 }

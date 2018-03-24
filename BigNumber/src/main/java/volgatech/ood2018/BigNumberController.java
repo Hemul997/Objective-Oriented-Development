@@ -5,7 +5,6 @@ public class BigNumberController {
     private char operation;
 
     void setParams(String line) {
-
         this.firstArg = new BigNumber(parseArgs(line)[0]);
         this.secondArg = new BigNumber(parseArgs(line)[2]);
         this.operation = parseArgs(line)[1].charAt(0);
