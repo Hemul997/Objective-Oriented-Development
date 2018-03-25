@@ -1,9 +1,10 @@
 package volgatech.ood2018.controllers;
 
-import volgatech.ood2018.shapes.Circle;
+import volgatech.ood2018.creators.CirclesCreator;
+import volgatech.ood2018.creators.IShapesCreator;
+import volgatech.ood2018.creators.RectanglesCreator;
+import volgatech.ood2018.creators.TrianglesCreator;
 import volgatech.ood2018.shapes.IShape;
-import volgatech.ood2018.shapes.Rectangle;
-import volgatech.ood2018.shapes.Triangle;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,28 +13,27 @@ public class ShapeController {
 
     public void printShapeData(IShape shape, FileWriter writer) throws IOException {
         writer.write(shape.getName() + ':');
-        writer.write(" Perimeter: " + shape.getPerimeter());
-        writer.write(" Area: " + shape.getArea() + '\n');
+        writer.write(" Perimeter: " + shape.getPerimeter().toString());
+        writer.write(" Area: " + shape.getArea().toString() + '\n');
     }
 
     public IShape makeShape(String line) {
         IShape shape = null;
-        String[] shapeParams = line.split(" ");
-        switch (shapeParams[0]) {
+        IShapesCreator shapesCreator;
+        String[] params = line.split(" ");
+        String shapeParams = line.substring(params[0].length() + 1);
+        switch (params[0]) {
             case "Triangle":
-                shape = new Triangle(Integer.parseInt(shapeParams[1]), Integer.parseInt(shapeParams[2]),
-                    Integer.parseInt(shapeParams[3]), Integer.parseInt(shapeParams[4]), Integer.parseInt(shapeParams[5]),
-                    Integer.parseInt(shapeParams[6]));
+                shapesCreator = TrianglesCreator.getInstance();
+                shape = shapesCreator.create(shapeParams);
                 break;
             case "Circle":
-                shape = new Circle(Integer.parseInt(shapeParams[1]), Integer.parseInt(shapeParams[2]),
-                    Integer.parseInt(shapeParams[3]));
+                shapesCreator = CirclesCreator.getInstance();
+                shape = shapesCreator.create(shapeParams);
                 break;
             case "Rectangle":
-                shape = new Rectangle(Integer.parseInt(shapeParams[1]), Integer.parseInt(shapeParams[2]),
-                        Integer.parseInt(shapeParams[3]), Integer.parseInt(shapeParams[4]));
-                break;
-            default:
+                shapesCreator = RectanglesCreator.getInstance();
+                shape = shapesCreator.create(shapeParams);
                 break;
         }
         return shape;

@@ -1,18 +1,20 @@
 package volgatech.ood2018.shapes.elements;
 
-public class Dot {
-    private int x, y;
+import volgatech.ood2018.bignumber.BigNumber;
 
-    public Dot(int x, int y) {
+public class Dot {
+    private BigNumber x, y;
+
+    public Dot(BigNumber x, BigNumber y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    public BigNumber getX() {
         return x;
     }
 
-    public int getY() {
+    public BigNumber getY() {
         return y;
     }
 }

@@ -145,6 +145,7 @@ public class BigNumber {
         int digitCount = 0;
         while (!thisNumber.value.isEmpty()) {
             BigNumber dividend = createNumberForDivision(thisNumber, number, returnValue, digitCount);
+            dividend.deleteRedundantZeros();
             digitCount = 0;
             BigNumber multiplicationResult = new BigNumber("0");
             for (int divCoefficient = BIG_NUMBER_BASE - 1; divCoefficient >= 0; divCoefficient--) {
@@ -168,6 +169,110 @@ public class BigNumber {
         BigNumber returnNumber = new BigNumber(returnValue);
         returnNumber.deleteRedundantZeros();
         return returnNumber;
+    }
+
+    private List<String> divideByNumbers() {
+        List<String> numbers = new ArrayList<>();
+        for (int i = 0; i < this.size(); i += 2) {
+            String digit1 = "";
+            String digit2 = "";
+
+            if (i < this.size() - 1) {
+                digit1 = this.value.get(i + 1).toString();
+            }
+
+            if (i < this.size()) {
+                digit2 = this.value.get(i).toString();
+            }
+
+            String digits = digit1 + digit2;
+            numbers.add(digits);
+        }
+        return numbers;
+    }
+
+    public BigNumber sqrt() throws IllegalArgumentException {
+        List<Integer> sqrt = new ArrayList<>();
+        // Делим число по 2 цифры начиная слева
+        List<String> numbers = divideByNumbers();
+        int iterCount = numbers.size() - 1;
+
+        int initDefaultValue = Integer.parseInt(numbers.get(numbers.size() - 1));
+        numbers.remove(numbers.size() - 1);
+
+        int firstSqrtDigit = (int) Math.sqrt(initDefaultValue);
+        sqrt.add(firstSqrtDigit);
+
+        BigNumber defaultValue = new BigNumber(String.valueOf(initDefaultValue));
+        BigNumber sqrtValue = new BigNumber(String.valueOf(firstSqrtDigit));
+        // Здесь подсчитывается корень из большого числа
+        // Сначала возводим текущее значение корня в квадрат
+        BigNumber valueSqr = sqrtValue.multiply(sqrtValue);
+        // Шаг по алгоритму, получаем первое число нового значения под корнем
+        BigNumber firstValueForNumUnderRoot = defaultValue.subtract(valueSqr);
+        for (int i = 0; i < iterCount; i++) {
+            // Выносим следующее число к новому значению
+            String newPartOfValueUnderRoot = "";
+            BigNumber currValueUnderRoot = defaultValue;
+            if (!numbers.isEmpty()) {
+                // "Опускаем" следующую пару чисел к текущему числу под корнем
+                newPartOfValueUnderRoot = String.valueOf(firstValueForNumUnderRoot) + String.valueOf(numbers.get(numbers.size() - 1));
+                numbers.remove(numbers.size() - 1);
+                // Создали число, которое будет "под корнем", из него вычитаем то, что выйдет при подборе
+                currValueUnderRoot = new BigNumber(newPartOfValueUnderRoot);
+            }
+
+            // значение корня умножили на 2, по алгоритму
+            sqrtValue = sqrtValue.multiply(new BigNumber("2"));
+            int newDigit = 0;
+            BigNumber subtrahend = new BigNumber("0");
+            for (int digit = 9; digit >= 0; digit--) {
+                // конструируем число, подбираем коэффициент
+                subtrahend = new BigNumber(String.valueOf(sqrtValue) + String.valueOf(digit));
+                BigNumber comparisonValue = subtrahend.multiply(new BigNumber(String.valueOf(digit)));
+                if (comparisonValue.compareTo(currValueUnderRoot) <= 0) {
+                    newDigit = digit;
+                    sqrt.add(newDigit);
+                    break;
+                }
+            }
+
+            if (numbers.isEmpty()) {
+                break;
+            }
+
+            BigNumber newDefaultValue = currValueUnderRoot.subtract(subtrahend.multiply(new BigNumber(String.valueOf(newDigit))));
+            defaultValue = newDefaultValue;
+            sqrtValue = calculateNewValue(sqrt);
+        }
+
+        String sqrtString = "";
+        for (int i = 0; i < sqrt.size(); i++) {
+            sqrtString += String.valueOf(sqrt.get(i));
+        }
+
+        return new BigNumber(sqrtString);
+    }
+
+    public BigNumber pow(int powNumber) {
+        BigNumber number = new BigNumber(new ArrayList<>(this.value));
+        BigNumber thisValue = new BigNumber(new ArrayList<>(this.value));
+        BigNumber returnValue = new BigNumber();
+
+        for (int i = 1; i < powNumber; ++i) {
+            returnValue = number.multiply(thisValue);
+            number = new BigNumber(new ArrayList<>(returnValue.value));
+        }
+
+        return returnValue;
+    }
+
+    private BigNumber calculateNewValue(List<Integer> numbers) {
+        BigNumber number = new BigNumber("0");
+        for (int i = 0; i < numbers.size(); i++) {
+            number = number.multiply(new BigNumber("10")).add(new BigNumber(String.valueOf(numbers.get(i))));
+        }
+        return number;
     }
 
     private BigNumber createNumberForDivision(BigNumber mainDividend, BigNumber divider,
