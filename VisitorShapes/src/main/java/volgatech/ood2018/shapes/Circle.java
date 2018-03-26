@@ -2,6 +2,7 @@ package volgatech.ood2018.shapes;
 
 import volgatech.ood2018.bignumber.BigNumber;
 import volgatech.ood2018.shapes.elements.Dot;
+import volgatech.ood2018.visitors.IShapeVisitor;
 
 public class Circle implements IShape {
     final private BigNumber PI = new BigNumber("314");
@@ -33,8 +34,12 @@ public class Circle implements IShape {
 
     }
 
+    @Override
+    public String accept(IShapeVisitor visitor) {
+        return visitor.visit(this);
+    }
+
     public void areaCalculation() {
-        //this.area = Math.PI * Math.pow(this.radius, 2);
         try {
             this.area = (PI.multiply(this.radius.pow(2))).divide(PI_DIVIDER);
         } catch (Exception e) {
@@ -44,7 +49,6 @@ public class Circle implements IShape {
     }
 
     public void perimeterCalculation() {
-        //this.perimeter = 2 * Math.PI * this.radius;
         try {
             this.perimeter = (PI.multiply(this.radius)).multiply(new BigNumber("2")).divide(PI_DIVIDER);
         } catch (Exception e) {

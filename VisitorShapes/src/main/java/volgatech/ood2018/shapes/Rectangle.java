@@ -2,6 +2,7 @@ package volgatech.ood2018.shapes;
 
 import volgatech.ood2018.bignumber.BigNumber;
 import volgatech.ood2018.shapes.elements.Dot;
+import volgatech.ood2018.visitors.IShapeVisitor;
 
 public class Rectangle implements IShape {
 
@@ -19,12 +20,10 @@ public class Rectangle implements IShape {
     }
 
     public void areaCalculation() {
-        //this.area = Math.abs(this.height * this.length);
         this.area = this.height.multiply(this.length);
     }
 
     public void perimeterCalculation() {
-        //this.perimeter = Math.abs(2 * (this.length + this.height));
         this.perimeter = (this.length.add(this.height)).multiply(new BigNumber("2"));
     }
 
@@ -39,5 +38,10 @@ public class Rectangle implements IShape {
     @Override
     public String getName() {
         return "Rectangle";
+    }
+
+    @Override
+    public String accept(IShapeVisitor visitor) {
+        return visitor.visit(this);
     }
 }

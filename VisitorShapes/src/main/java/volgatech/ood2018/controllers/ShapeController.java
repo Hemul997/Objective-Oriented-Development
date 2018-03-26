@@ -5,6 +5,7 @@ import volgatech.ood2018.creators.IShapesCreator;
 import volgatech.ood2018.creators.RectanglesCreator;
 import volgatech.ood2018.creators.TrianglesCreator;
 import volgatech.ood2018.shapes.IShape;
+import volgatech.ood2018.visitors.PrintVisitor;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,9 +13,8 @@ import java.io.IOException;
 public class ShapeController {
 
     public void printShapeData(IShape shape, FileWriter writer) throws IOException {
-        writer.write(shape.getName() + ':');
-        writer.write(" Perimeter: " + shape.getPerimeter().toString());
-        writer.write(" Area: " + shape.getArea().toString() + '\n');
+        PrintVisitor visitor = new PrintVisitor();
+        visitor.print(writer, shape);
     }
 
     public IShape makeShape(String line) {

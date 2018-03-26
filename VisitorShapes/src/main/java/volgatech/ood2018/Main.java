@@ -17,6 +17,7 @@ public class Main {
         String inpFile = args[0];
         String outFile = args[1];
 
+
         Path path = Paths.get(inpFile);
 
         try {
