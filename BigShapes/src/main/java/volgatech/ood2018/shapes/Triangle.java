@@ -21,13 +21,6 @@ public class Triangle implements IShape {
         BigNumber s = thirdVertex.getY().subtract(firstVertex.getY());
         BigNumber q = thirdVertex.getX().subtract(firstVertex.getX());
         BigNumber r = secondVertex.getY().subtract(firstVertex.getY());
-        /*int p = secondVertex.getX() - firstVertex.getX();
-        int s = thirdVertex.getY() - firstVertex.getY();
-        int q = thirdVertex.getX() - firstVertex.getX();
-        int r = secondVertex.getY() - firstVertex.getY();
-
-        double determinant = Math.abs((p * s) - (r * q));
-        this.area = determinant / 2;*/
 
         BigNumber determinant = p.multiply(s).subtract(r.multiply(q));
         try {
@@ -42,7 +35,6 @@ public class Triangle implements IShape {
         BigNumber firstLength = new Vector(firstVertex, secondVertex).getLength();
         BigNumber secondLength = new Vector(secondVertex, thirdVertex).getLength();
         BigNumber thirdLength = new Vector(thirdVertex, firstVertex).getLength();
-        //this.perimeter = firstLength + secondLength + thirdLength;
         this.perimeter = (firstLength.add(secondLength)).add(thirdLength);
     }
 

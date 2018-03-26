@@ -19,12 +19,10 @@ public class Rectangle implements IShape {
     }
 
     public void areaCalculation() {
-        //this.area = Math.abs(this.height * this.length);
         this.area = this.height.multiply(this.length);
     }
 
     public void perimeterCalculation() {
-        //this.perimeter = Math.abs(2 * (this.length + this.height));
         this.perimeter = (this.length.add(this.height)).multiply(new BigNumber("2"));
     }
 

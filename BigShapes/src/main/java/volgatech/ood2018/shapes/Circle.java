@@ -34,24 +34,18 @@ public class Circle implements IShape {
     }
 
     public void areaCalculation() {
-        //this.area = Math.PI * Math.pow(this.radius, 2);
         try {
             this.area = (PI.multiply(this.radius.pow(2))).divide(PI_DIVIDER);
         } catch (Exception e) {
             this.area = new BigNumber("0");
         }
-
     }
 
     public void perimeterCalculation() {
-        //this.perimeter = 2 * Math.PI * this.radius;
         try {
             this.perimeter = (PI.multiply(this.radius)).multiply(new BigNumber("2")).divide(PI_DIVIDER);
         } catch (Exception e) {
             this.perimeter = new BigNumber("0");
         }
-
     }
-
-
 }
