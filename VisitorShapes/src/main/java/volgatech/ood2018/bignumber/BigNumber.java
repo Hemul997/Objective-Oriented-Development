@@ -65,12 +65,16 @@ public class BigNumber {
         return returnNumber;
     }
 
-    public void setNumber(List<Character> number) {
+    private void setNumber(List<Character> number) {
         this.value.addAll(number);
     }
 
     public BigNumber subtract(BigNumber subNumber) {
         List<Character> returnValue = new ArrayList<>();
+
+        if (this.compareTo(subNumber) == -1) {
+            return subNumber.subtract(this);
+        }
 
         setSameSize(subNumber);
         boolean isLastDigit = false;

@@ -72,6 +72,10 @@ public class BigNumber {
     public BigNumber subtract(BigNumber subNumber) {
         List<Character> returnValue = new ArrayList<>();
 
+        if (this.compareTo(subNumber) == -1) {
+            return subNumber.subtract(this);
+        }
+
         setSameSize(subNumber);
         boolean isLastDigit = false;
         for (int i = 0; i < subNumber.size(); i++) {
