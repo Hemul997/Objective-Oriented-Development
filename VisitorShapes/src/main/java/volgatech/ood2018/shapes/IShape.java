@@ -9,5 +9,5 @@ public interface IShape {
     BigNumber getArea();
     BigNumber getPerimeter();
     String getName();
-    String accept(IShapeVisitor visitor);
+    void accept(IShapeVisitor visitor);
 }

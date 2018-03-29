@@ -5,7 +5,7 @@ import volgatech.ood2018.shapes.Rectangle;
 import volgatech.ood2018.shapes.Triangle;
 
 public interface IShapeVisitor {
-    String visit(Circle circle);
-    String visit(Rectangle rectangle);
-    String visit(Triangle triangle);
+    void visit(Circle circle);
+    void visit(Rectangle rectangle);
+    void visit(Triangle triangle);
 }

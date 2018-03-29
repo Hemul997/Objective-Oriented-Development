@@ -41,7 +41,7 @@ public class Rectangle implements IShape {
     }
 
     @Override
-    public String accept(IShapeVisitor visitor) {
-        return visitor.visit(this);
+    public void accept(IShapeVisitor visitor) {
+        visitor.visit(this);
     }
 }

@@ -34,9 +34,10 @@ public class Triangle implements IShape {
 
     public void perimeterCalculation() {
         BigNumber firstLength = new Vector(firstVertex, secondVertex).getLength();
-        BigNumber secondLength = new Vector(secondVertex, thirdVertex).getLength();
+        BigNumber secondLength = new Vector(secondVertex, thirdVertex).getLength();;
         BigNumber thirdLength = new Vector(thirdVertex, firstVertex).getLength();
-        this.perimeter = (firstLength.add(secondLength)).add(thirdLength);
+
+        this.perimeter = firstLength.add(secondLength).add(thirdLength);
     }
 
     public BigNumber getArea() {
@@ -53,8 +54,8 @@ public class Triangle implements IShape {
     }
 
     @Override
-    public String accept(IShapeVisitor visitor) {
-        return visitor.visit(this);
+    public void accept(IShapeVisitor visitor) {
+        visitor.visit(this);
     }
 }
 

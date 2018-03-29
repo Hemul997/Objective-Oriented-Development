@@ -11,28 +11,32 @@ import java.util.List;
 
 public class PrintVisitor implements IShapeVisitor{
 
+    private StringBuilder builder = new StringBuilder("");
+
+
     public void print(FileWriter writer, IShape shape) throws IOException{
-        writer.write(shape.accept(this));
+        shape.accept(this);
+        writer.write(builder.toString());
     }
 
     @Override
-    public String visit(Circle circle) {
-        return (circle.getName() + ':'
+    public void visit(Circle circle) {
+        builder.append(circle.getName() + ':'
                 + " Perimeter: " + circle.getPerimeter().toString()
                 + " Area: " + circle.getArea().toString() + '\n');
 
     }
 
     @Override
-    public String visit(Rectangle rectangle) {
-        return (rectangle.getName() + ':'
+    public void visit(Rectangle rectangle) {
+        builder.append(rectangle.getName() + ':'
                 + " Perimeter: " + rectangle.getPerimeter().toString()
                 + " Area: " + rectangle.getArea().toString() + '\n');
     }
 
     @Override
-    public String visit(Triangle triangle) {
-        return (triangle.getName() + ':'
+    public void visit(Triangle triangle) {
+        builder.append(triangle.getName() + ':'
                 + " Perimeter: " + triangle.getPerimeter().toString()
                 + " Area: " + triangle.getArea().toString() + '\n');
     }
