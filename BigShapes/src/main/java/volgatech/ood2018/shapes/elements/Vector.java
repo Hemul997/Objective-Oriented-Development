@@ -21,11 +21,8 @@ public class Vector {
         BigNumber yCoordinatesDistance = this.end.getY().subtract(this.begin.getY()).pow(2);
         BigNumber sumOfDistances = xCoordinatesDistance.add(yCoordinatesDistance);
         this.length = sumOfDistances.sqrt();
-//        /*this.length = Math.sqrt(Math.pow(this.end.getX() - this.begin.getX(), 2) +
-//                Math.pow(this.end.getY() - this.begin.getY(), 2));*/
-
-
     }
+
     public String toString() {
         return (this.begin.getX().toString() + ' ' + this.begin.getY().toString() + ' ' +
                 this.end.getX().toString() + ' ' + this.end.getY().toString());
